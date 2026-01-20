@@ -3,7 +3,9 @@ const areaWidth = 18;
 
 let area = [];
 
-let direction = 'right';
+const directionEnum = ['up', 'down', 'left', 'right'];
+
+let direction = directionEnum[0];
 
 
 // Functions
@@ -37,13 +39,13 @@ function removeTail() {
 
 function go() {
    var indexOfMaxValue = area.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0); //head of the snake
-   if (direction == 'right') {
+   if (direction == directionEnum[3]) {
       var newIndex = indexOfMaxValue + 1;
-   } else if (direction == 'left') {
+   } else if (direction == directionEnum[2]) {
       var newIndex = indexOfMaxValue - 1;
-   } else if (direction == 'up') {
+   } else if (direction == directionEnum[0]) {
       var newIndex = indexOfMaxValue - areaWidth;
-   } else if (direction == 'down') {
+   } else if (direction == directionEnum[1]) {
       var newIndex = indexOfMaxValue + areaWidth;
    }
 
@@ -55,16 +57,16 @@ function go() {
 document.addEventListener('keydown', (e) => {
    switch (e.key) {
       case 'ArrowUp':
-         direction = 'up';
+         direction = directionEnum[0];
          break;
       case 'ArrowDown':
-         direction = 'down';
+         direction = directionEnum[1];
          break;
       case 'ArrowLeft':
-         direction = 'left';
+         direction = directionEnum[2];
          break;
       case 'ArrowRight':
-         direction = 'right';
+         direction = directionEnum[3];
          break;
    }
 });
