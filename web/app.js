@@ -18,8 +18,11 @@ function start() {
    // Snake position in the center
    area[areaWidth * Math.floor(areaWidth / 2) + Math.floor(areaWidth / 2)] = 2;
    area[areaWidth * Math.floor(areaWidth / 2) + Math.floor(areaWidth / 2) + areaWidth] = 1;
+}
 
-
+function gameOver() {
+   alert('Game Over!');
+   document.location.reload();
 }
 
 function generateArea() {
@@ -39,14 +42,27 @@ function removeTail() {
 
 function go() {
    var indexOfMaxValue = area.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0); //head of the snake
+   let newIndex = indexOfMaxValue;
    if (direction == directionEnum[3]) {
-      var newIndex = indexOfMaxValue + 1;
+      if (indexOfMaxValue % areaWidth == areaWidth - 1) {
+         gameOver();
+      }
+      newIndex = indexOfMaxValue + 1;
    } else if (direction == directionEnum[2]) {
-      var newIndex = indexOfMaxValue - 1;
+      if (indexOfMaxValue % areaWidth == 0) {
+         gameOver();
+      }
+      newIndex = indexOfMaxValue - 1;
    } else if (direction == directionEnum[0]) {
-      var newIndex = indexOfMaxValue - areaWidth;
+      newIndex = indexOfMaxValue - areaWidth;
+      if (newIndex < 0) {
+         gameOver();
+      }
    } else if (direction == directionEnum[1]) {
-      var newIndex = indexOfMaxValue + areaWidth;
+      newIndex = indexOfMaxValue + areaWidth;
+      if (newIndex >= areaWidth * areaWidth) {
+         gameOver();
+      }
    }
 
    area[newIndex] = Math.max(...area) + 1; //move head
@@ -78,5 +94,6 @@ start();
 
 // Output
 setInterval(() => {
+   go();
    generateArea();
-}, 1000);
+}, 500);
