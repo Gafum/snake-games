@@ -7,6 +7,10 @@ const directionEnum = ['up', 'down', 'left', 'right'];
 
 let direction = directionEnum[0];
 
+//Modules
+function getRandomNumber(min, max) {
+   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 // Functions
 function start() {
@@ -18,26 +22,30 @@ function start() {
    // Snake position in the center
    area[areaWidth * Math.floor(areaWidth / 2) + Math.floor(areaWidth / 2)] = 2;
    area[areaWidth * Math.floor(areaWidth / 2) + Math.floor(areaWidth / 2) + areaWidth] = 1;
-}
 
-function gameOver() {
-   alert('Game Over!');
-   document.location.reload();
+   generateFood();
 }
 
 function generateArea() {
    let html = area.reduce((prev, cur, index) => {
-      prev += cur.toString();
+      prev += cur == -1 ? '*' : cur.toString();
       if ((index + 1) % areaWidth == 0) prev += '<br>';
       return prev;
    }, '');
 
-
    document.querySelector('#game-spawner').innerHTML = html;
 }
 
+function gameOver() {
+   // alert('Game Over!');
+   // document.location.reload();
+}
+
 function removeTail() {
-   area = area.map(value => value > 0 ? value - 1 : 0);
+   area = area.map(value => value > 0 ? value - 1 : value);
+}
+function eatFood() {
+   area = area.map(value => value > 0 ? value + 1 : value);
 }
 
 function go() {
@@ -65,8 +73,23 @@ function go() {
       }
    }
 
+   if (area[newIndex] == -1) {
+      generateFood();
+      eatFood();
+   }
+
    area[newIndex] = Math.max(...area) + 1; //move head
-   removeTail(); //remove tail
+   removeTail();
+}
+
+function generateFood() {
+   let rundomIndex = getRandomNumber(0, areaWidth * areaWidth - 1);
+   while (area[rundomIndex] !== 0) {
+      rundomIndex = getRandomNumber(0, areaWidth * areaWidth - 1);
+   }
+   area[rundomIndex] = -1;
+   console.log(area, rundomIndex);
+
 }
 
 // Input
@@ -96,4 +119,4 @@ start();
 setInterval(() => {
    go();
    generateArea();
-}, 500);
+}, 200);
