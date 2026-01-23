@@ -44,42 +44,43 @@ function gameOver() {
 function removeTail() {
    area = area.map(value => value > 0 ? value - 1 : value);
 }
-function eatFood() {
-   area = area.map(value => value > 0 ? value + 1 : value);
-}
 
 function go() {
-   var indexOfMaxValue = area.reduce((iMax, x, i, arr) => x > arr[iMax] ? i : iMax, 0); //head of the snake
-   let newIndex = indexOfMaxValue;
-   if (direction == directionEnum[3]) {
-      if (indexOfMaxValue % areaWidth == areaWidth - 1) {
-         gameOver();
-      }
-      newIndex = indexOfMaxValue + 1;
-   } else if (direction == directionEnum[2]) {
-      if (indexOfMaxValue % areaWidth == 0) {
-         gameOver();
-      }
-      newIndex = indexOfMaxValue - 1;
-   } else if (direction == directionEnum[0]) {
-      newIndex = indexOfMaxValue - areaWidth;
-      if (newIndex < 0) {
-         gameOver();
-      }
-   } else if (direction == directionEnum[1]) {
-      newIndex = indexOfMaxValue + areaWidth;
-      if (newIndex >= areaWidth * areaWidth) {
-         gameOver();
-      }
+   const headIndex = area.reduce(
+      (iMax, x, i, arr) => x > arr[iMax] ? i : iMax,
+      0
+   );
+
+   let newIndex = headIndex;
+
+   if (direction === directionEnum[3]) {
+      if (headIndex % areaWidth === areaWidth - 1) return gameOver();
+      newIndex++;
+   }
+   else if (direction === directionEnum[2]) {
+      if (headIndex % areaWidth === 0) return gameOver();
+      newIndex--;
+   }
+   else if (direction === directionEnum[0]) {
+      newIndex -= areaWidth;
+      if (newIndex < 0) return gameOver();
+   }
+   else if (direction === directionEnum[1]) {
+      newIndex += areaWidth;
+      if (newIndex >= areaWidth * areaWidth) return gameOver();
    }
 
-   if (area[newIndex] == -1) {
+   //body collision
+   if (area[newIndex] > 0) return gameOver();
+
+   //food check
+   if (area[newIndex] === -1) {
       generateFood();
-      eatFood();
+   } else {
+      removeTail();
    }
 
-   area[newIndex] = Math.max(...area) + 1; //move head
-   removeTail();
+   area[newIndex] = Math.max(...area) + 1;
 }
 
 function generateFood() {
