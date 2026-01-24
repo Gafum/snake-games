@@ -28,7 +28,7 @@ function start() {
 
 function generateArea() {
    let html = area.reduce((prev, cur, index) => {
-      prev += cur == -1 ? '*' : cur.toString();
+      prev += cur == -1 ? '*' : cur > 0 ? '4' : '0';
       if ((index + 1) % areaWidth == 0) prev += '<br>';
       return prev;
    }, '');
@@ -37,8 +37,8 @@ function generateArea() {
 }
 
 function gameOver() {
-   // alert('Game Over!');
-   // document.location.reload();
+   alert('Game Over!');
+   document.location.reload();
 }
 
 function removeTail() {
