@@ -1,5 +1,7 @@
 # Snake Games
 
+### [Standard Example](https://gafum.github.io/snake-games/)
+
 This repository shows the same Snake game in different programming languages.
 
 Each folder contains a simple version of the Snake game.

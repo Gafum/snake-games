@@ -1,5 +1,7 @@
 # Snake Game in JavaScript
 
+### [Website](https://gafum.github.io/snake-games/)
+
 This folder contains a browser version of the Snake game.
 
 How to run:
